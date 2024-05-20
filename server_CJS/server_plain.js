@@ -15,4 +15,4 @@ server_cjs.listen(3000, ()=> {
 // 실행 : node 파일이름
 
 //cd .\server_CJS
-//node server_cjs.js
+//node server_plain.js
