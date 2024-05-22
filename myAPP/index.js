@@ -1,18 +1,13 @@
-import {createServer} from 'http';
+import express from 'express';
 
-const server = createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/plain'});
-    res.write('hello node.js "ESM" <express> ');
-    res.end();
-})
+const myAPP = express();
 
-server.listen(3000, ()=> {
-    console.log('Server is listening on port 3000');
-})
+//middleware
+//main page GET
+myAPP.get('/',(req, res) => {
+    res.send('Main page GET request');
+});
 
-
-// 현재 위치로 이동 : cd 폴더위치 
-// 실행 : node 파일이름
-
-//cd \myAPP
-//node index.js
+myAPP.listen(3000, () => {
+    console.log('Sever is running');
+});
