@@ -3,7 +3,7 @@
 
 import express from 'express';
 import path from 'path';
-import nunjucks from nunjsucks;
+import nunjucks from 'nunjucks';
 
 const __dirname = path.resolve();
 
