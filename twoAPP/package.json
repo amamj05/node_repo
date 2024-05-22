@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "express": "^4.19.2",
+    "nunjucks": "^3.2.4"
+  },
+  "name": "twoapp",
+  "version": "1.0.0",
+  "description": "study node.js server",
+  "main": "two_index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node two_index.js",
+    "dev": "nodemon two_index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
