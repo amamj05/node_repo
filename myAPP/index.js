@@ -1,37 +1,35 @@
-// ESM express 모듈 사용
+// nunjucks 사용
 
 
 import express from 'express';
 import path from 'path';
+import nunjucks from nunjsucks;
 
 const __dirname = path.resolve();
 
 const myAPP = express();
 
-//middleware
-//main page GET
+// view set
+myAPP.set('view engine', 'html');   // main.html -> main(.html)
+
+
+// nunjucks 
+nunjucks.configure('views', {
+    watch: true,
+    // html이 수정될때 바로바로 반영 후 렌더링
+    express: myAPP
+});
+
+
+
 myAPP.get('/',(req, res) => {
-    res.sendFile(__dirname + '/public/main.html');  
-    //__dirname 은 import path 필요
+    res.sendFile(__dirname + '/public/main.html'); });
 
 
-    //
-    // res.send('Main page GET request');
-    // res.send('<h1>hi</h1>');
-    // res.send(`
-    // <h1>hi</h1>
-    // <h1>hi</h1>
-    // <h1>hi</h1>
-    // <h1>hi</h1>
-    // `);
-    // res.sendFile(HTML파일로 보내주기도함);
+myAPP.get('/write', (req, res) =>{
+    res.render('write.html');
 });
 
 myAPP.listen(3000, () => {
     console.log('Server is running');
 });
-
-
-
-// 현재 위치로 이동 : cd 폴더위치 
-// 실행 : node 파일이름
