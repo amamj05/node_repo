@@ -2,20 +2,26 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-const session = require('session');
+const session = require('express-session');
 const dotenv = require('dotenv');
 const { sign } = require('crypto');
-//
-app.use(express.json());
-app.use(express.urlencoded({extended:false}));
-app.use(express.raw());
-app.use(express.text());
+
 
 dotenv.config();
 const app = express();
 
+//// SET
+
 app.set('port', process.env.PORT || 3000);
 
+
+
+//// USE 
+
+app.use(express.json());
+app.use(express.urlencoded({extended:false}));
+app.use(express.raw());
+app.use(express.text());
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(express.json());
@@ -39,43 +45,21 @@ app.use(session({resave:false, saveUninitialized:false,
     name: 'session-cookie'
 }));
 
-app.get('/', (req, res)=>{
-    res.send("express main page");
-});
-
-app.get("/html",(req, res)=>{
-    res.sendFile(Path.join(__dirname, 'html.html'));
-});
-
-
-
-app.get("cookie_set", (req, res)=>{
-    res.cookie("username","test01",{
-        expires: new Date(Date.now()+30000),
-        httpOnly: true, secure: true, signed:true
-    })
-});
-
-app.get("/cookie_reset",(req, res)=>{
-    res.clearCookie("username","test01",{
-        httpOnly:true, secure, signed:true
-    })
-    res.send("!!! cookie reset !!!")
-});  
-
-// app.listen(3000, ()=>{
-//     console.log("Server is running");
-// });
-
-app.listen(app.get('port'), ()=>{
-    console.log("Server is running");
-});
 
 
 // multipart -> multer 이미지 업로드
+
 const MYmulter = require('multer');
-const mul_upload = multer({
-    storage: multer.diskStorage({ destination(req, file, done){
+const MYfs = require('fs');
+
+try{
+    MYfs.readdirSync('uploads');
+}catch(err){
+    MYfs.mkdirSync('uploads');
+}
+
+const mul_upload = MYmulter({
+    storage: MYmulter.diskStorage({ destination(req, file, done){
         done(null, 'uploads/');
     },
     filename(req, file, done){
@@ -85,3 +69,98 @@ const mul_upload = multer({
 }), 
     limits: {fileSize: 5 *1024*1024}
 });  //fileSize : 5MB
+
+
+
+///// GET
+
+
+app.get('/', (req, res)=>{
+    res.send("express main page");
+});
+
+app.get("/html",(req, res)=>{
+    res.sendFile(Path.join(__dirname, 'html.html'));
+});
+
+app.get("/myerror", (req, res, next)=>{
+    console.log("create err");
+    next();
+}, (req, res)=>{
+    throw new Error("Error Error Error Error");
+}
+);
+
+app.use((err, req, res, next)=>{
+    // 
+});
+
+
+// cookieParser
+app.get("cookie_set", (req, res)=>{
+    res.cookie("username","test01",{
+        expires: new Date(Date.now()+30000),
+        httpOnly: true, secure: true, signed:true
+    });
+    res.cookie("nickname", "test01")
+    res.send("!!! cookie setting")
+});
+
+app.get("/cookie_reset",(req, res)=>{
+    res.clearCookie("username","test_new",{
+        httpOnly:true, secure, signed:true
+    })
+    res.send("!!! cookie reset !!!")
+});  
+
+
+
+// multipart -> multer 이미지 업로드 PAGE
+
+// 1
+app.get('/upload', (req, res)=>{
+    res.sendFile(path.join(__dirname, 'multipart.html'));
+});
+app.post('upload', mul_upload.single('img'),(req, res)=>{
+    console.log(req.file, req.body);
+    res.send('업로드 성공');
+});
+
+// 2
+app.get('/upload2', (req, res)=>{
+    res.sendFile(path.join(__dirname, 'multipart2.html'));
+});
+app.post('upload2', mul_upload.array('many'),(req, res)=>{
+    console.log(req.files, req.body);
+    res.send('업로드 성공');
+});
+
+// 3
+app.get('/upload3', (req, res)=>{
+    res.sendFile(path.join(__dirname, 'multipart3.html'));
+});
+app.post('upload3', mul_upload.fields([{name: 'img1'},{name:'img2'}]),(req, res)=>{
+    console.log(req.files, req.body);
+    res.send('업로드 성공');
+});
+
+// 4
+app.get('/upload4', (req, res)=>{
+    res.sendFile(path.join(__dirname, 'multipart4.html'));
+});
+app.post('upload4', mul_upload.none(),(req, res)=>{
+    console.log(req.body);
+    res.send('업로드 성공');
+});
+
+
+
+
+// app.listen(3000, ()=>{
+//     console.log("Server is running");
+// });
+
+app.listen(app.get('port'), ()=>{
+    console.log("Server is running");
+});
+
