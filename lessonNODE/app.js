@@ -14,7 +14,8 @@ const app = express();
 //// SET
 
 app.set('port', process.env.PORT || 3000);
-
+app.set('view engine','html');
+nunjucks.configure('views',{express:app, watch:true});
 
 
 //// USE 
