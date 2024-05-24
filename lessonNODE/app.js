@@ -26,6 +26,8 @@ nunjucks.configure('views',{express:app, watch:true});
 
 //// USE 
 
+
+// app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 app.use(express.raw());
@@ -47,6 +49,12 @@ app.use((err, req, res, next)=>{
     res.status(500).send(err.message);
 });
 
+
+// cookieParser
+app.use(cookieParser(process.env.COOKIE_SECRET));
+
+
+// session
 app.use(session({resave:false, saveUninitialized:false,
     secret: process.env.COOKIE_SECRET,
     cookie: {httpOnly:true, secure:false},
