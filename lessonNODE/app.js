@@ -7,6 +7,9 @@ const dotenv = require('dotenv');
 // const { sign } = require('crypto');
 const indexRouter = require('./routes');  // 경로 (index 생략)
 const userRouter = require('./routes/user');  // 경로 (.js 생략)
+const nunjucks = require('nunjucks');
+const nunjucksHOMErouter = require('./routes/nun_home');
+const nunjucksUSERrouter = require('./routes/nun_user');
 
 dotenv.config();
 const app = express();
@@ -14,6 +17,9 @@ const app = express();
 //// SET
 
 app.set('port', process.env.PORT || 3000);
+
+
+// nunjucks setting
 app.set('view engine','html');
 nunjucks.configure('views',{express:app, watch:true});
 
@@ -53,7 +59,8 @@ app.use(session({resave:false, saveUninitialized:false,
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
-
+app.use('/nun_home', nunjucksHOMErouter);
+app.use('/nun_user', nunjucksUSERrouter);
 
 
 // multipart -> multer 이미지 업로드
@@ -89,7 +96,7 @@ app.get('/', (req, res)=>{
 });
 
 app.get("/html",(req, res)=>{
-    res.sendFile(Path.join(__dirname, 'html.html'));
+    res.sendFile(Path.join(__dirname, 'test_html.html'));
 });
 
 app.get("/myerror", (req, res, next)=>{
