@@ -96,7 +96,7 @@ app.get('/', (req, res)=>{
 });
 
 app.get("/html",(req, res)=>{
-    res.sendFile(Path.join(__dirname, 'test_html.html'));
+    res.sendFile(path.join(__dirname, '/test_html.html'));
 });
 
 app.get("/myerror", (req, res, next)=>{

@@ -4,3 +4,35 @@
 {{title}} 가져올
 {{title}} 수
 {{title}} 있음
+
+
+<p>{{'<h2><></h2>'}}</p>
+<!-- <p>{{'<h2><></h2>'}} | self</p> -->
+
+<ul>
+    {% for item in fruits %}
+        <li>{{item}}</li>
+    {% endfor %}
+    </ul>
+
+
+<ul>
+{% for item in fruits %}
+    <li>{{loop.index}}번째 {{item}}</li>
+{% endfor %}
+</ul>
+<!-- 없음 -->
+{% if isloggedin == 0 %}   
+<h3>회원이 아닙니다. 회원 가입을 진행해주세요</h3>
+<!-- 로그인됨 -->
+{% elif isloggedin == 1 %}
+<h3>로그인 되셨습니다. 환영합니다 </h3>
+<!-- 비번 오류 -->
+{% elif isloggedin == 2 %}
+<h3>비밀번호를 확인해주세요</h3>
+{% else %}
+<h2>알수없는 오류</h2>
+{% endif %}
+
+
+{% include "component1.html" %}
