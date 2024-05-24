@@ -1,10 +1,10 @@
 const express = require('express');
 
 
-const index_router = express.Router();
+const router = express.Router();
 
-index_router.get('/', (req, res)=>{
-    res.send("routers folder's index page")
+router.get('/', (req, res)=>{
+    res.send("routes folder's index page");
 });
 
-module.exports = index_router;
+module.exports = router;

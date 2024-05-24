@@ -4,8 +4,9 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const dotenv = require('dotenv');
-const { sign } = require('crypto');
-
+// const { sign } = require('crypto');
+const indexRouter = require('./routes');  // 경로 (index 생략)
+const userRouter = require('./routes/user');  // 경로 (.js 생략)
 
 dotenv.config();
 const app = express();
@@ -44,6 +45,13 @@ app.use(session({resave:false, saveUninitialized:false,
     cookie: {httpOnly:true, secure:false},
     name: 'session-cookie'
 }));
+
+
+
+// Router
+
+app.use('/', indexRouter);
+app.use('/user', userRouter);
 
 
 
