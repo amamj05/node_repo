@@ -20,33 +20,62 @@
 </head>
 
 <body>
-<div>
-    <form id="user-form" action="">
-        <fieldset>
-            <legend>사용자 등록</legend>
-        </fieldset>
-    </form>
-</div>
-<div>
-    <table id="user-list">
+    <div>
+        <form id="user-form" action="">
+            <fieldset>
+                <legend>사용자 등록</legend>
+                <div><input type="text" placeholder="name"></div>
+                <div><input type="number" placeholder="age"></div>
+                <div><input type="checkbox">마케팅 동의 여부<label for="agree"></label></div>
+                <button type="submit">등록</button>
+            </fieldset>
+        </form>
+    </div>
+    <div>
+        <table id="user-list">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{user.id}}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.age}}</td>
+                    <td>{{ '동의' if user.marketing else '거부'}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-    </table>
-</div>
-
-<div>
-    <form id="comment-form" action="">
-        <fieldset>
-            <legend>댓글 등록</legend>
-        </fieldset>
-    </form>
-</div>
-<div>
-    <table id="comment-list">
-
-    </table>
-</div>
+    <div>
+        <form id="comment-form" action="">
+            <fieldset>
+                <legend>댓글 등록</legend>
+                <div><input type="text" id="userid" placeholder="ID"></div>
+                <div><input type="text" id="comment" placeholder="comment"></div>
+            </fieldset>
+        </form>
+    </div>
+    <div>
+        <table id="comment-list">
+            <thead><tr>아이디<th></th>
+            <th>작성자</th>
+            <th>댓글</th>
+            <th>수정</th>
+            <th>삭제</th>
+        </tr></thead>
+        </table>
+    </div>
 </body>
 
 </html>
 <!-- axios script -->
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/sequelize.js"></script>

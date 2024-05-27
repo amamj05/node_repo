@@ -12,7 +12,11 @@ class User extends Sequelize.Model{
         },
         comment:{type: Sequelize.TEXT,  //외래키 해야함
             allowNull: false
-        },  
+        }, 
+        marketing:{
+            type: Sequelize.BOOLEAN,
+            allowNull: false
+        },
         created_at:{type: Sequelize.DATE,
             allowNull: false,
             defaultValue:Sequelize.Now
