@@ -7,8 +7,9 @@ const {sequelize} = require('./models');
 
 // route import
 const indexRouter = require('./routes');
-const UserRouter = require('./routes/users');
-const commentRouter = require('./routes/comments');
+const UserRouter = require('./routes/user');
+const commentRouter = require('./routes/comment');
+const exp = require('constants');
 
 const app = express();
 
@@ -23,7 +24,7 @@ app.use('/', indexRouter);
 app.use('/users', UserRouter);
 app.use('/comments', commentRouter);
 app.use('/', express.static(path.join(__dirname, 'publick')));
-
+app.use(express.json());
 
 sequelize.sync({force: true}).then(()=>{console.log('DB 연결됨')})
 .catch((err)=>{console.error(err)});
