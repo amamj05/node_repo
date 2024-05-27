@@ -22,7 +22,7 @@ class comment extends Sequelize.Model {
         });
     }
     static associate(db) {
-        db.comment.belongsTo(db.User,
+        db.comment.belongsTo(db.User,  //일대다
             {
                 foreignKey: 'commenter',
                 targetKey: 'id'
@@ -30,3 +30,8 @@ class comment extends Sequelize.Model {
     }
 }
 module.exports = comment;
+
+
+// 일대다 belongsTo
+// 일대일 hasOne
+// 다대다 belongsToMany
