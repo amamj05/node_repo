@@ -1,35 +1,44 @@
-// nunjucks 사용
-
-
 import express from 'express';
-import path from 'path';
 import nunjucks from 'nunjucks';
+import bodyParser from 'body-parser';
 
-const __dirname = path.resolve();
+const app = express();
 
-const myAPP = express();
+// body parser set
+app.use(bodyParser.urlencoded({ extended: false })); // express 기본 모듈 사용
+app.use(bodyParser.json());
 
-// view set
-myAPP.set('view engine', 'html');   // main.html -> main(.html)
+// view engine set
+app.set('view engine', 'html'); // main.html -> main(.html)
 
-
-// nunjucks 
+// nunjucks
 nunjucks.configure('views', {
-    watch: true,
-    // html이 수정될때 바로바로 반영 후 렌더링
-    express: myAPP
+    watch: true, // html 파일이 수정될 경우, 다시 반영 후 렌더링
+    express: app
+})
+
+// middleware
+// main page GET
+app.get('/', async (req, res) => {
+    res.render('main');
 });
 
-
-
-myAPP.get('/',(req, res) => {
-    res.sendFile(__dirname + '/public/main.html'); });
-
-
-myAPP.get('/write', (req, res) =>{
-    res.render('write.html');
+app.get('/write', (req, res) => {
+    res.render('write');
 });
 
-myAPP.listen(3000, () => {
+app.post('/write', async (req, res) => {
+    const title = req.body.title;
+    const contents = req.body.contents;
+    const date = req.body.date;
+
+    res.render('detail', { 'detail': { title: title, contents: contents, date: date } });
+});
+
+app.get('/detail', async (req, res) => {
+    res.render('detail');
+})
+
+app.listen(3000, () => {
     console.log('Server is running');
 });
