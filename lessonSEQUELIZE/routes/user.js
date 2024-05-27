@@ -28,6 +28,14 @@ router.route('/').get(
 );
 
 
-router.get('/:id/comment');
+router.get('/:id/comment', async (req, res, next)=>{
+    try{
+        const comments = await comment.findAll({
+            include: {model:User,
+                where: {id: req.params.id}
+            }
+        });
+    }catch(err){console.error(err); next(err);}
+});
 
 module.exports = router;

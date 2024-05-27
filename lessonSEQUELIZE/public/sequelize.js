@@ -59,4 +59,9 @@ document.getElementById('usesr-form').addEventListener('submit' ,
 
 
 
-function getComment(id){}
+async function getComment(id){
+    try{
+        const res = await axios.get(`/user/${id}/comment`);
+        const comment = res.data;
+    }catch(err){console.error(err); next(err);}
+}

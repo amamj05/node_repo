@@ -1,8 +1,15 @@
 import express from 'express';
 import nunjucks from 'nunjucks';
 import bodyParser from 'body-parser';
+//file을 다룰수 있는 fs (/data/writing.json)
+import fs from 'fs';
+import path from 'path';
 
 const app = express();
+
+
+// file path
+const jsonPath = path.join(__dirname, 'data','writing.json');
 
 // body parser set
 app.use(bodyParser.urlencoded({ extended: false })); // express 기본 모듈 사용
