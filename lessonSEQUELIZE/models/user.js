@@ -17,7 +17,16 @@ class User extends Sequelize.Model{
             allowNull: false,
             defaultValue:Sequelize.Now
         }  
-    },{});}
+    },{// 옵션
+        sequelize,
+        timestamps: false,
+        underscored:false,
+        modelName:'User',  //단수형
+        tableName:'users',  //복수형 
+        paranoid:false,
+        charset:'utf8',
+        collate:'utf8_general_ci'
+    });}
     static associate(db){}
 }
 module.exports = User;

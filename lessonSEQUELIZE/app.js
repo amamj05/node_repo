@@ -6,7 +6,7 @@ const {sequelize} = require('./models');
 const app = express();
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'html');
-nunjucks.configure('views',{express:app, watch:false}); //models 완료후 true로
+nunjucks.configure('views',{express:app, watch:true}); //models 완료후 true로
 
 sequelize.sync({force: false}).then(()=>{console.log('DB 연결됨')})
 .catch((err)=>{console.error(err)});
