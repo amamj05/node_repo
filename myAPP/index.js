@@ -5,11 +5,16 @@ import bodyParser from 'body-parser';
 import fs from 'fs';
 import path from 'path';
 
+const __dirname = path.resolve();
 const app = express();
 
 
+// 데이터 저장
 // file path
-const jsonPath = path.join(__dirname, 'data','writing.json');
+const jsonPath = path.join(__dirname, 'data', 'writing.json');
+// __dirname은 현재 파일의 위치폴더
+
+
 
 // body parser set
 app.use(bodyParser.urlencoded({ extended: false })); // express 기본 모듈 사용
@@ -27,7 +32,9 @@ nunjucks.configure('views', {
 // middleware
 // main page GET
 app.get('/', async (req, res) => {
-    res.render('main');
+    const jsonData = fs.readFileSync(jsonPath);
+    const writings = JSON.parse(jsonData);
+    res.render('main', {list:writings});
 });
 
 app.get('/write', (req, res) => {
@@ -38,6 +45,23 @@ app.post('/write', async (req, res) => {
     const title = req.body.title;
     const contents = req.body.contents;
     const date = req.body.date;
+
+    const json_fileData = fs.readFileSync(jsonPath);   //파일 읽기
+    // console.log(json_fileData);
+
+    const writings = JSON.parse(json_fileData);   //파일 변환
+    // console.log(writings);
+
+    // req 데이터 담아두기
+    writings.push({
+        'title': title,
+        'contents': contents,
+        'date': date
+    });
+
+    
+    // 담아둔 데이터 외부 json파일에 저장
+    fs.writeFileSync(jsonPath, JSON.stringify(writings));
 
     res.render('detail', { 'detail': { title: title, contents: contents, date: date } });
 });
