@@ -63,5 +63,33 @@ async function getComment(id){
     try{
         const res = await axios.get(`/user/${id}/comment`);
         const comment = res.data;
+        const tbody = document.querySelector('#comment-list tbody');
+        tbody.innerHTML='';
+        comment.map(function (comment){
+            const row = document.createElement('tr');
+
+            let id_td = document.createElement('td');
+            id_td.textContent = comment.id;
+            row.appendChild(id_td);
+
+            let name_td = document.createElement('td');
+            name_td.textContent = comment.User.name;
+            row.appendChild(name_td);
+
+            let comment_td = document.createElement('td');
+            comment_td.textContent = comment.comment;
+            row.appendChild(comment_td);
+
+            const comment_edit = document.createElement('button');
+            comment_edit.textContent = '수정';
+            comment_edit.addEventListener('click', async()=>{
+                const newComment = prompt('수정할 내용을 입력해주세요');
+                if(!newComment){return alert('수정 내용을 입력하지않았습니다')}
+                try{
+                    await axios.patch(`/comments/${comment.id}`,{comment:newComment})
+                    getComment(id);  //다시 불러오기
+                }catch(err){console.error(err);}
+            });
+        });
     }catch(err){console.error(err); next(err);}
 }
