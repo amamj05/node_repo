@@ -57,6 +57,17 @@ document.getElementById('usesr-form').addEventListener('submit' ,
     }
 );
 
+document.getElementById('comment-form').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const id = e.target.userid.value;
+    const comment = e.target.comment.value;
+    try {
+        await axios.post(`/comment`, {id, comment});
+        getComment(id);
+    } catch (err) { console.error(err); next(err); }
+    e.target.userid.value = '';
+    e.target.comment.value = '';
+});
 
 
 async function getComment(id){
@@ -112,5 +123,7 @@ async function getComment(id){
 
             tbody.appendChild(row);
         });
+
+       
     }catch(err){console.error(err); next(err);}
 }

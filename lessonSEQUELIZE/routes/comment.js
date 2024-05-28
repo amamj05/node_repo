@@ -25,19 +25,6 @@ router.route('/:id').patch(async (req, res, next) => {
 );
 
 
-document.getElementById('comment-form').addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const id = e.target.userid.value;
-    const comment = e.target.comment.value;
-    try {
-        await axios.post(`/comment`, {id, comment});
-        getComment(id);
-    } catch (err) { console.error(err); next(err); }
-    e.target.userid.value = '';
-    e.target.comment.value = '';
-});
-
-
 
 router.post('/', async(req, res, next)=>{
     try{
