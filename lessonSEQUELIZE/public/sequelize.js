@@ -80,16 +80,37 @@ async function getComment(id){
             comment_td.textContent = comment.comment;
             row.appendChild(comment_td);
 
+            //댓글 수정
             const comment_edit = document.createElement('button');
             comment_edit.textContent = '수정';
             comment_edit.addEventListener('click', async()=>{
                 const newComment = prompt('수정할 내용을 입력해주세요');
                 if(!newComment){return alert('수정 내용을 입력하지않았습니다')}
                 try{
-                    await axios.patch(`/comments/${comment.id}`,{comment:newComment})
+                    await axios.patch(`/comment/${comment.id}`,{comment:newComment});
                     getComment(id);  //다시 불러오기
                 }catch(err){console.error(err);}
             });
+
+            edit_td = document.createElement('td');
+            edit_td.appendChild(edit);
+            row.appendChild(edit_td);
+
+            // 댓글 삭제
+            const comment_remove = document.createElement('button');
+            comment_remove.textContent = '삭제';
+            comment_remove.addEventListener('click', async()=>{
+                try{
+                    await axios.delete(`/comment/${comment.id}`);
+                    getComment(id);  //다시 불러오기
+                }catch(err){console.error(err);}
+            });
+
+            remove_td = document.createElement('td');
+            remove_td.appendChild(comment_remove);
+            row.appendChild(remove_td);
+
+            tbody.appendChild(row);
         });
     }catch(err){console.error(err); next(err);}
 }
