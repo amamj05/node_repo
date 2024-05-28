@@ -1,4 +1,4 @@
-<!-- 325p -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,9 +24,9 @@
         <form id="user-form" action="">
             <fieldset>
                 <legend>사용자 등록</legend>
-                <div><input type="text" placeholder="name" required></div>
-                <div><input type="number" placeholder="age" required></div>
-                <div><input type="checkbox">마케팅 동의 여부<label for="agree"></label></div>
+                <div><input type="text" id="username" placeholder="name" required></div>
+                <div><input type="number" id="age" placeholder="age" required></div> 
+                <div><input type="checkbox" id="marketing" >마케팅 동의 여부<label for="marketing"></label></div>
                 <button type="submit">등록</button>
             </fieldset>
         </form>
@@ -58,8 +58,8 @@
         <form id="comment-form" action="">
             <fieldset>
                 <legend>댓글 등록</legend>
-                <div><input type="text" id="userid" placeholder="ID"></div>
-                <div><input type="text" id="comment" placeholder="comment"></div>
+                <div><input type="text" id="userid" required placeholder="ID"></div>
+                <div><input type="text" id="comment" required placeholder="comment"></div>
                 <button type="sumbit">등록</button>
             </fieldset>
         </form>
@@ -75,8 +75,8 @@
         </table>
     </div>
 </body>
-
-</html>
+<!-- 325p -->
 <!-- axios script -->
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="/sequelize.js"></script>
+</html>

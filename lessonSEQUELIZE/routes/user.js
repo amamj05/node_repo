@@ -16,13 +16,23 @@ router.route('/').get(
 ).post(
     async (req, res, next)=>{
         try{
+            console.log("@@@@@@@@@여기안됨@@@@@@@@");
+            // const { name, age, comment, marketing } = req.body;
+            // const post_name = req.body.username;
+            // const post_age = req.body.age;
+            // const post_marketing = req.body.marketing; 
+            console.log('req.body:', req.body);   ///
             const user = await User.create(
-                { name: req.body.name, 
-                    age: req.body.name, 
-                    marketing: req.body.marketing
-                }
+            {
+                 name: req.body.username, 
+                 age: req.body.age, 
+                 marketing: req.body.marketing 
+                // name: post_name,
+                // age: post_age,
+                // marketing: post_marketing 
+            }
             );
-            res.status(201).json(user)
+            res.status(201).json(user);
         }catch(err){console.error(err); next(err);}
     }
 );
@@ -35,6 +45,7 @@ router.get('/:id/comment', async (req, res, next)=>{
                 where: {id: req.params.id}
             }
         });
+        res.json(comments);
     }catch(err){console.error(err); next(err);}
 });
 

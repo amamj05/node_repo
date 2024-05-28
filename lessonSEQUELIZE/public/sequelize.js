@@ -1,14 +1,14 @@
-document.querySelectorAll('#usesr-list tr').forEach((el)=>{el.addEventListener('click', function(){
+document.querySelectorAll('#user-list tr').forEach((el)=>{el.addEventListener('click', function(){
     const id_func = el.querySelector('td');
-    getComment(id);
+    getComment(id_func);
 });});
 
 
 
 async function getUser(){
     try{
-        const res = await axios.get('/users');
-        const users = res.date;
+        const res = await axios.get('/user');
+        const users = res.data;
         const tbody = document.querySelector('#user-list tbody');
         tbody.innerHTML ='';
         users.map(function(user){
@@ -16,19 +16,19 @@ async function getUser(){
             row.addEventListener('click', ()=>{getComment(user.id);});
             
             let td_id = document.createElement('td');
-            td.textContent = user.id;
+            td_id.textContent = user.id;
             row.appendChild(td_id);
 
             let td_name = document.createElement('td');
-            td.textContent = user.name;
+            td_name.textContent = user.name;
             row.appendChild(td_name);
 
             let td_age = document.createElement('td');
-            td.textContent = user.age;
+            td_age.textContent = user.age;
             row.appendChild(td_age);
 
             let td_marketing = document.createElement('td');
-            td.textContent = user.marketing ? '동의':'거부';
+            td_marketing.textContent = user.marketing ? '동의':'거부';
             row.appendChild(td_marketing);
             
             tbody.appendChild(row);
@@ -41,14 +41,15 @@ async function getUser(){
 
 //
 
-document.getElementById('usesr-form').addEventListener('submit' ,
+document.getElementById('user-form').addEventListener('submit' ,
     async (e)=>{
         e.preventDefault();
         const name = e.target.username.value;
         const age = e.target.age.value;
-        const marketing = e.target.marketing.value;
+        const marketing = e.target.marketing.checked;
+        console.log({name, age, marketing});  ///
         try{
-            await axios.post('/users', {name, age, marketing});
+            await axios.post('/user', {name, age, marketing});
             getUser();
         }catch(err){console.error(err);}
         e.target.username.value = '';
@@ -73,10 +74,10 @@ document.getElementById('comment-form').addEventListener('submit', async (e)=>{
 async function getComment(id){
     try{
         const res = await axios.get(`/user/${id}/comment`);
-        const comment = res.data;
+        const comments = res.data;
         const tbody = document.querySelector('#comment-list tbody');
         tbody.innerHTML='';
-        comment.map(function (comment){
+        comments.map(function (comment){
             const row = document.createElement('tr');
 
             let id_td = document.createElement('td');
@@ -103,8 +104,8 @@ async function getComment(id){
                 }catch(err){console.error(err);}
             });
 
-            edit_td = document.createElement('td');
-            edit_td.appendChild(edit);
+            let edit_td = document.createElement('td');
+            edit_td.appendChild(comment_edit);
             row.appendChild(edit_td);
 
             // 댓글 삭제
@@ -114,10 +115,10 @@ async function getComment(id){
                 try{
                     await axios.delete(`/comment/${comment.id}`);
                     getComment(id);  //다시 불러오기
-                }catch(err){console.error(err);}
+                }catch(err){console.error(err); }
             });
 
-            remove_td = document.createElement('td');
+            let remove_td = document.createElement('td');
             remove_td.appendChild(comment_remove);
             row.appendChild(remove_td);
 

@@ -15,15 +15,15 @@ const app = express();
 
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'html');
-nunjucks.configure('views',{express:app, watch:true}); //models 완료후 true로
+nunjucks.configure('views',{express:app, watch:false}); //models 완료후 true로
 
 
 // routes use
 app.use(express.urlencoded({extended:false}));
 app.use('/', indexRouter);
-app.use('/users', UserRouter);
-app.use('/comments', commentRouter);
-app.use('/', express.static(path.join(__dirname, 'publick')));
+app.use('/user', UserRouter);
+app.use('/comment', commentRouter);
+app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 sequelize.sync({force: true}).then(()=>{console.log('DB 연결됨')})

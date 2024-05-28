@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+
 // const { FOREIGNKEYS } = require('sequelize/lib/query-types');
 
 class comment extends Sequelize.Model {
@@ -10,7 +11,7 @@ class comment extends Sequelize.Model {
             },
             created_at: {type: Sequelize.DATE,
                 allowNull: true,
-                defaultValue:Sequelize.Now}  //언제 만들어졌는지
+                defaultValue:Sequelize.NOW}  //언제 만들어졌는지
         }, {// 옵션
             sequelize,
             timestamps: false,
@@ -22,11 +23,11 @@ class comment extends Sequelize.Model {
         });
     }
     static associate(db) {
-        db.comment.belongsTo(db.User,  //일대다
-            {
+        db.comment.belongsTo(db.User,{  //일대다
+            
                 foreignKey: 'commenter',
                 targetKey: 'id'
-            })
+            });
     }
 }
 module.exports = comment;
