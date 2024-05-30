@@ -90,7 +90,7 @@ app.post('/write', async (req, res) => {
 
 
 // DB연결
-mongoose.connect('mongodb://127.0.0.1:27017')
+mongoose.connect('mongodb://127.0.0.1:27017/express')
     .then(() => console.log('DB 연결됨'))
     .catch(err => console.error(err));
 
@@ -105,8 +105,14 @@ const writingSchema = new Schema({
 
 const Writing = mongoose.model('writings', writingSchema);
 
-app.get('/detail', async (req, res) => {
-    res.render('detail');
+app.get('/detail/:id', async (req, res) => {
+    const id = req.params._id;
+
+    const detail = await Writing.findOne({ _id : id}).then((result)=>{
+        res.render('detail', {'detail':result})
+    }).catch((err)=>{ console.error(err); });
+
+    // res.render('detail');
 })
 
 app.listen(3000, () => {
